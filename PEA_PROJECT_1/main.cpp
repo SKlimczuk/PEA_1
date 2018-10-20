@@ -8,8 +8,47 @@
 
 #include <iostream>
 
+#include "Graph.hpp"
+
+using namespace std;
+
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
+    
+    string MAIN_MENU = "\nMENU\n1-read data from file\n2-TSP alghoritm\n0-exit\nCHOICE: ";
+    string FILE_MENU = "\ninsert file name: ";
+    int choice;
+    
+    bool menuFlowCondition = true;
+    
+    Graph *graph;
+    
+   
+    do {
+        cout << MAIN_MENU;
+        cin >> choice;
+        
+        switch (choice) {
+            case 1:
+            {
+                //read data from file
+                string filename;
+                cout << FILE_MENU;
+                cin >> filename;
+                graph = new Graph(filename);
+            } break;
+            case 2:
+            {
+                //begin TSP alghoritm
+            } break;
+            case 0:
+            {
+                //exit
+                menuFlowCondition = false;
+            } break;
+            default:
+                break;
+        }
+    } while(menuFlowCondition);
+    
     return 0;
 }
