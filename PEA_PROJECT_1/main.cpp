@@ -14,9 +14,9 @@ using namespace std;
 
 int main(int argc, const char * argv[]) {
     
-    string MAIN_MENU = "\nMENU\n1-read data from file\n2-TSP alghoritm\n0-exit\nCHOICE: ";
+    string MAIN_MENU = "\n-----MENU-----\n1-read data from file\n2-TSP alghoritm\n0-exit\nCHOICE: ";
     string FILE_MENU = "\ninsert file name: ";
-    string TSP_MENU = "\ninsert start city: ";
+    string TSP_MENU = "\ninsert start city number: ";
     string TSP_FAIL = "\ngraph is not initialized !\n";
     int choice;
     
@@ -26,9 +26,12 @@ int main(int argc, const char * argv[]) {
     
    
     do {
-        cout << MAIN_MENU;
-        cin >> choice;
         
+        do {
+            cout << MAIN_MENU;
+            cin >> choice;
+        } while(0 > choice || choice > 3 );
+            
         switch (choice) {
             case 1:
             {
@@ -45,10 +48,10 @@ int main(int argc, const char * argv[]) {
                 {
                     int cityNum;
                     do {
-                    cout << TSP_MENU;
-                    cin >> cityNum;
+                        cout << TSP_MENU;
+                        cin >> cityNum;
                     } while (cityNum < 0);
-                    graph->travellingSalesmanProblem(cityNum);
+                    graph -> travellingSalesmanProblem(cityNum);
                 }
                 else
                     cout << TSP_FAIL;
@@ -56,8 +59,9 @@ int main(int argc, const char * argv[]) {
             case 0:
             {
                 //exit
-                menuFlowCondition = false;
-                graph->~Graph();
+                if(graph)
+                    graph -> ~Graph();
+                 menuFlowCondition = false;
             } break;
             default:
                 break;

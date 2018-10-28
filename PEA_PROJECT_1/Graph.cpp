@@ -10,6 +10,7 @@
 
 //prototypes of methods used only in this class
 int** initializeMatrix(int **matrix, int limit);
+void displayTspResult(int *resultArr, int counter, int totalWeight);
 
 Graph::Graph(string filename)
 {
@@ -47,9 +48,6 @@ Graph::~Graph()
     }
     
     delete[] adjMatrix;
-    delete[] resultArr;
-    delete[] tempResultArr;
-    delete[] visitedCitiesArr;
 }
 
 void Graph::travellingSalesmanProblem(int cityNum)
@@ -58,38 +56,23 @@ void Graph::travellingSalesmanProblem(int cityNum)
     tempResultArr = new int[cities];
     visitedCitiesArr = new bool[cities];
 
-    startCityNum = cityNum;
     minWeight = INT_MAX;
+    startCityNum = cityNum;
+    
     tempWeight = 0;
     counter = 0;
     tempCounter = 0;
-    startCityNum = cityNum;
     
-    TSPalgorithm(cityNum);
-    if(counter)
-    {
-        for(int i = 0; i < counter; i++)
-            cout << resultArr[i] << " ";
-        cout << startCityNum << endl;
-        cout << "WEIGHT = " << minWeight << endl;
-    }
-    else
-        cout << "\nERROR" << endl;
+    tspAlgorithm(cityNum);
+    
+    displayTspResult(resultArr, counter, minWeight);
+    
+    delete[] resultArr;
+    delete[] tempResultArr;
+    delete[] visitedCitiesArr;
 }
 
-//----------------------------------------------class methods
-int** initializeMatrix(int **matrix, int limit)
-{
-    for(int i = 0; i < limit; i++){
-        matrix[i] = new int[limit];
-        for(int k = 0; k < limit; k++)
-            matrix[i][k] = 0;
-    }
-    
-    return matrix;
-}
-
-void Graph::TSPalgorithm(int cityNum)
+void Graph::tspAlgorithm(int cityNum)
 {
     tempResultArr[tempCounter++] = cityNum;
     
@@ -101,7 +84,7 @@ void Graph::TSPalgorithm(int cityNum)
             if(adjMatrix[cityNum][i] > 0 && !visitedCitiesArr[i])
             {
                 tempWeight += adjMatrix[cityNum][i];
-                TSPalgorithm(i);
+                tspAlgorithm(i);
                 tempWeight -= adjMatrix[cityNum][i];
             }
         }
@@ -122,4 +105,27 @@ void Graph::TSPalgorithm(int cityNum)
     tempCounter--;
 }
 
+//----------------------------------------------class methods
+int** initializeMatrix(int **matrix, int limit)
+{
+    for(int i = 0; i < limit; i++){
+        matrix[i] = new int[limit];
+        for(int k = 0; k < limit; k++)
+            matrix[i][k] = 0;
+    }
+    
+    return matrix;
+}
 
+void displayTspResult(int *resultArr, int counter, int totalWeight)
+{
+    if(counter)
+    {
+        for(int i = 0; i < counter; i++)
+            cout << resultArr[i] << " ";
+        cout << resultArr[0] << endl;
+        cout << "WEIGHT = " << totalWeight << endl;
+    }
+    else
+        cout << "\nERROR" << endl;
+}
