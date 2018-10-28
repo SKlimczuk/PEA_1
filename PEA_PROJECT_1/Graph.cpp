@@ -17,10 +17,10 @@ Graph::Graph(string filename)
     file.open(filename.c_str());
     
     if(!file.good())
-        cout << "INCORRECT FILE !" << endl;
+        cout << endl << "INCORRECT FILE !" << endl;
     else
     {
-        cout << "CORRECT FILE !" << endl;
+        cout << endl << "CORRECT FILE !" << endl;
         
         file >> this->cities;
         
@@ -39,7 +39,45 @@ Graph::Graph(string filename)
     }
 }
 
+Graph::~Graph()
+{
+    for(int i = 0; i < cities; i++)
+    {
+        delete[] adjMatrix[i];
+    }
+    
+    delete[] adjMatrix;
+    delete[] resultArr;
+    delete[] tempResultArr;
+    delete[] visitedCitiesArr;
+}
 
+void Graph::travellingSalesmanProblem(int cityNum)
+{
+    resultArr = new int[cities];
+    tempResultArr = new int[cities];
+    visitedCitiesArr = new bool[cities];
+
+    startCityNum = cityNum;
+    minWeight = INT_MAX;
+    tempWeight = 0;
+    counter = 0;
+    tempCounter = 0;
+    startCityNum = cityNum;
+    
+    TSPalgorithm(cityNum);
+    if(counter)
+    {
+        for(int i = 0; i < counter; i++)
+            cout << resultArr[i] << " ";
+        cout << startCityNum << endl;
+        cout << "WEIGHT = " << minWeight << endl;
+    }
+    else
+        cout << "\nERROR" << endl;
+}
+
+//----------------------------------------------class methods
 int** initializeMatrix(int **matrix, int limit)
 {
     for(int i = 0; i < limit; i++){
@@ -49,6 +87,39 @@ int** initializeMatrix(int **matrix, int limit)
     }
     
     return matrix;
+}
+
+void Graph::TSPalgorithm(int cityNum)
+{
+    tempResultArr[tempCounter++] = cityNum;
+    
+    if(tempCounter < cities)
+    {
+        visitedCitiesArr[cityNum] = true;
+        for(int i = 0; i < cities; i++)
+        {
+            if(adjMatrix[cityNum][i] > 0 && !visitedCitiesArr[i])
+            {
+                tempWeight += adjMatrix[cityNum][i];
+                TSPalgorithm(i);
+                tempWeight -= adjMatrix[cityNum][i];
+            }
+        }
+        visitedCitiesArr[cityNum] = false;
+    }
+    else if(adjMatrix[startCityNum][cityNum] != 0)
+    {
+        tempWeight += adjMatrix[cityNum][startCityNum];
+        if(tempWeight < minWeight)
+        {
+            minWeight = tempWeight;
+            for(int i = 0; i < tempCounter; i++)
+                resultArr[i] = tempResultArr[i];
+            counter = tempCounter;
+        }
+        tempWeight -= adjMatrix[cityNum][startCityNum];
+    }
+    tempCounter--;
 }
 
 

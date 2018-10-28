@@ -23,9 +23,22 @@ private:
     int cities;
     int **adjMatrix;
     
+    int *resultArr;
+    int *tempResultArr;
+    bool *visitedCitiesArr;
+    
+    int startCityNum;
+    int minWeight;
+    int tempWeight;
+    int counter;
+    int tempCounter;
+    
+    void TSPalgorithm(int city);
+    
 public:
     Graph(string filename);
-    void travellingSalesmanProblem();
+    ~Graph();
+    void travellingSalesmanProblem(int cityNum);
 };
 
 
