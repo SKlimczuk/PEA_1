@@ -14,6 +14,8 @@
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
+#include <chrono>
+#include <sstream>
 
 using namespace std;
 
@@ -38,12 +40,16 @@ private:
     int counter;
     int tempCounter;
     
+    int iterationsCounter;
+    
     void tspAlgorithm(int city);
     
 public:
     Graph(string filename);
+    Graph(int cities);
     ~Graph();
     void travellingSalesmanProblem(int cityNum);
+    string simulationTSP();
 };
 
 #endif /* TSP_hpp */

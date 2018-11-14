@@ -36,7 +36,25 @@ Graph::Graph(string filename)
             }
         }
         
+        file.close();
+        
         cout << "\nCITIES:" << cities << endl;
+    }
+}
+
+Graph::Graph(int cities)
+{
+    this -> cities = cities;
+    adjMatrix = new int*[cities];
+    adjMatrix = initializeMatrix(adjMatrix, cities);
+    
+    for(int i = 0; i < cities; i++){
+        for(int k = 0; k < cities; k++){
+            if(i == k)
+                adjMatrix[i][k] = 0;
+            else
+                adjMatrix[i][k] = rand()%100;
+        }
     }
 }
 
@@ -63,13 +81,50 @@ void Graph::travellingSalesmanProblem(int cityNum)
     counter = 0;
     tempCounter = 0;
     
+    iterationsCounter = 0;
+    
+    auto start = chrono::system_clock::now();
     tspAlgorithm(cityNum);
+    auto stop = chrono::system_clock::now();
     
     displayTspResult(resultArr, counter, minWeight);
+    
+    chrono::duration<double, milli> elapsed_miliseconds = stop-start;
+    cout << "TIME : " << elapsed_miliseconds.count() << " [ms]" << endl;
+    cout << "ITERATIONS : " << iterationsCounter << endl;
     
     delete[] resultArr;
     delete[] tempResultArr;
     delete[] visitedCitiesArr;
+}
+
+string Graph::simulationTSP()
+{
+    resultArr = new int[cities];
+    tempResultArr = new int[cities];
+    visitedCitiesArr = new bool[cities];
+    
+    minWeight = INT_MAX;
+    startCityNum = 0;
+    
+    tempWeight = 0;
+    counter = 0;
+    tempCounter = 0;
+    
+    auto start = chrono::system_clock::now();
+    tspAlgorithm(0);
+    auto stop = chrono::system_clock::now();
+    
+    chrono::duration<double, milli> elapsed_miliseconds = stop-start;
+    ostringstream outputTSPResult;
+    outputTSPResult << "CITIES : " << cities << "\nTIME: " << elapsed_miliseconds.count() << " [ms]\n";
+    
+    delete[] resultArr;
+    delete[] tempResultArr;
+    delete[] visitedCitiesArr;
+    
+    string simulationResult = outputTSPResult.str();
+    return simulationResult;
 }
 
 void Graph::tspAlgorithm(int cityNum)
@@ -92,6 +147,7 @@ void Graph::tspAlgorithm(int cityNum)
     }
     else if(adjMatrix[startCityNum][cityNum] != 0)
     {
+        iterationsCounter++;
         tempWeight += adjMatrix[cityNum][startCityNum];
         if(tempWeight < minWeight)
         {

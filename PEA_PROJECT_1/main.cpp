@@ -7,10 +7,16 @@
 //
 
 #include <iostream>
+#include <vector>
+#include <chrono>
 
 #include "Graph.hpp"
 
 using namespace std;
+
+void simulation(string filename);
+void simulation(string filename, int cities);
+vector<string> initVectorWithSimulationFiles();
 
 int main(int argc, const char * argv[]) {
     
@@ -56,6 +62,16 @@ int main(int argc, const char * argv[]) {
                 else
                     cout << TSP_FAIL;
             } break;
+            case 3:
+            {
+                string output_filename = "simulation_result.cpp";
+//                simulation(output_filename,6);
+//                simulation(output_filename,10);
+//                simulation(output_filename,12);
+//                simulation(output_filename,13);
+//                simulation(output_filename,14);
+//                simulation(output_filename,15);
+            } break;
             case 0:
             {
                 //exit
@@ -69,4 +85,88 @@ int main(int argc, const char * argv[]) {
     } while(menuFlowCondition);
     
     return 0;
+}
+
+void simulation(string filename)
+{
+    ofstream file;
+    file.open(filename);
+    
+    Graph *graph;
+    
+    if(file.good() == true)
+    {
+        cout << "\nCORRECT OUTPUT FILE" << endl;
+        vector<string> simulationFiles = initVectorWithSimulationFiles();
+        
+        file << "--------------------------------";
+        file << "\nBEGIN OF SIMULATION" << endl;
+        file << "--------------------------------" << endl;
+        
+        for(int i = 0; i < simulationFiles.size(); i++)
+        {
+            graph = new Graph(simulationFiles[i]);
+            string output =  graph -> simulationTSP();
+            file << output;
+            graph -> ~Graph();
+        }
+        
+        file << "--------------------------------";
+        file << "\nEND OF SIMULATION" << endl;
+        file << "--------------------------------" << endl;
+        
+        file.close();
+    }
+    else
+        cout << "\nERROR WITH OUTPUT FILE" << endl;
+    
+}
+
+void simulation(string filename, int cities)
+{
+    ofstream file;
+    file.open(filename);
+    
+    Graph *graph;
+    
+    if(file.good() == true)
+    {
+        cout << "\nCORRECT OUTPUT FILE" << endl;
+        vector<string> simulationFiles = initVectorWithSimulationFiles();
+        
+        file << "--------------------------------";
+        file << "\nBEGIN OF SIMULATION" << endl;
+        file << "--------------------------------" << endl;
+        
+//        for(int i = 0; i < 10; i++)
+//        {
+            graph = new Graph(cities);
+            string output =  graph -> simulationTSP();
+            file << output;
+            graph -> ~Graph();
+//        }
+        
+        file << "--------------------------------";
+        file << "\nEND OF SIMULATION" << endl;
+        file << "--------------------------------" << endl;
+        
+        file.close();
+    }
+    else
+        cout << "\nERROR WITH OUTPUT FILE" << endl;
+    
+}
+
+vector<string> initVectorWithSimulationFiles()
+{
+    vector<string> vector;
+    vector.push_back("tsp_6_1.txt");
+    vector.push_back("tsp_6_2.txt");
+    vector.push_back("tsp_10.txt");
+    vector.push_back("tsp_12.txt");
+    vector.push_back("tsp_13.txt");
+    vector.push_back("tsp_14.txt");
+    vector.push_back("tsp_15.txt");
+    
+    return vector;
 }
