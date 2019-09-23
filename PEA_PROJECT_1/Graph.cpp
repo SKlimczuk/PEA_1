@@ -68,14 +68,14 @@ Graph::~Graph()
     delete[] adjMatrix;
 }
 
-void Graph::travellingSalesmanProblem(int cityNum)
+void Graph::travellingSalesmanProblem()
 {
     resultArr = new int[cities];
     tempResultArr = new int[cities];
     visitedCitiesArr = new bool[cities];
 
     minWeight = INT_MAX;
-    startCityNum = cityNum;
+    startCityNum = 0;
     
     tempWeight = 0;
     counter = 0;
@@ -84,7 +84,7 @@ void Graph::travellingSalesmanProblem(int cityNum)
     iterationsCounter = 0;
     
     auto start = chrono::system_clock::now();
-    tspAlgorithm(cityNum);
+    tspAlgorithm(0);
     auto stop = chrono::system_clock::now();
     
     displayTspResult(resultArr, counter, minWeight);

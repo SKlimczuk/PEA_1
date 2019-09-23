@@ -48,7 +48,7 @@ public:
     Graph(string filename);
     Graph(int cities);
     ~Graph();
-    void travellingSalesmanProblem(int cityNum);
+    void travellingSalesmanProblem();
     string simulationTSP();
 };
 

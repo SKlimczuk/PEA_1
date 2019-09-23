@@ -22,7 +22,6 @@ int main(int argc, const char * argv[]) {
     
     string MAIN_MENU = "\n-----MENU-----\n1-read data from file\n2-TSP alghoritm\n0-exit\nCHOICE: ";
     string FILE_MENU = "\ninsert file name: ";
-    string TSP_MENU = "\ninsert start city number: ";
     string TSP_FAIL = "\ngraph is not initialized !\n";
     int choice;
     
@@ -52,12 +51,7 @@ int main(int argc, const char * argv[]) {
                 //begin TSP alghoritm
                 if(graph)
                 {
-                    int cityNum;
-                    do {
-                        cout << TSP_MENU;
-                        cin >> cityNum;
-                    } while (cityNum < 0);
-                    graph -> travellingSalesmanProblem(cityNum);
+                    graph -> travellingSalesmanProblem();
                 }
                 else
                     cout << TSP_FAIL;
